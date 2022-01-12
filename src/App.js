@@ -23,6 +23,7 @@ class App extends Component {
       this.fetchImages();
     }
   }
+
   fetchImages = async () => {
     this.setState({ loading: true });
 
@@ -44,6 +45,7 @@ class App extends Component {
       });
     }
   };
+
   handleFormSubmit = imageName => {
     this.setState({ imageName, items: [], page: 1 });
   };

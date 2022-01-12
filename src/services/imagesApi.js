@@ -13,7 +13,7 @@ async function imagesApi(nextName, page) {
     const { data } = await axios.get(`?q=${nextName}&page=${page}`);
     return data;
   } catch (e) {
-    console.error(e);
+    throw e;
   }
 }
 

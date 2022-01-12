@@ -20,28 +20,32 @@ class App extends Component {
     const nextName = this.state.imageName;
 
     if (prevName !== nextName || prevState.page !== this.state.page) {
-      this.setState({ loading: true });
-
-      try {
-        const result = await imagesApi(nextName, this.state.page);
-        this.setState(prevState => ({
-          items: [...prevState.items, ...result.hits],
-        }));
-        if (!this.state.items.length) {
-          toast.error('photo is missing');
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.setState({ loading: false });
-      }
+      this.fetchImages();
     }
   }
+  fetchImages = async () => {
+    this.setState({ loading: true });
 
+    try {
+      const result = await imagesApi(this.state.imageName, this.state.page);
+      this.setState(prevState => ({
+        items: [...prevState.items, ...result.hits],
+      }));
+      if (!this.state.items.length) {
+        toast.error('photo is missing');
+      }
+    } catch (e) {
+      throw e;
+    } finally {
+      this.setState({ loading: false });
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  };
   handleFormSubmit = imageName => {
-    this.setState({ imageName });
-    this.setState({ items: [] });
-    this.setState({ page: 1 });
+    this.setState({ imageName, items: [], page: 1 });
   };
 
   onBtnClick = () => {
